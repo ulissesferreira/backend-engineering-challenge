@@ -62,21 +62,10 @@ fileReader.on('line', (line) => {
     // Using 1 minute intervals.
     for (i = currentDate; i <= dateRounded; i = i + (60 * 1000)) {
 
-      let numOfItems = 0
-      let sum = 0
-      
-      // Every interval we go back into our cache and check which
-      // events are placed in the time interval required: between [i - window; i]
-      dataMap.forEach((item) => {
-        if ((item.date < i) && (item.date >= (i - (windowSize * 60 * 1000)))) {
-          numOfItems = numOfItems + 1
-          sum = sum + item.duration
-        }
-      })
-      //
-      // console.log(dateToString(i))
-      let outputAverage = Math.round((sum / numOfItems) * 10) / 10
-      let outputDate = dateToString(i)
+      const minimum = i - windowSize * 60 * 1000
+      const maximum = i 
+      const outputAverage = movingAverage(dataMap, minimum, maximum)
+      const outputDate = dateToString(i)
       outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}}\n`)
     }
 
@@ -86,24 +75,39 @@ fileReader.on('line', (line) => {
 
 fileReader.on('close', () => {
 
-  // currentDate
-  // dataMap[last]
+  const minimum = currentDate - windowSize * 60 * 1000
+  const maximum = 999999999999999 // Year 33658
+  const outputAverage = movingAverage(dataMap, minimum, maximum)
+  let outputDate = dateToString(currentDate)
+  outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}}\n`)
+  outputStream.end()
+
+})
+
+/**
+ * Calculates a moving average using our cache variable,
+ * the minimum and the maximum time for that interval.
+ * If the returning number is a float, it's rounded to
+ * one decimal place.
+ * 
+ * @param { List } items 
+ * @param { Number } minimum 
+ * @param { Number } maximum 
+ */
+const movingAverage = (items, minimum, maximum) => {
 
   let numOfItems = 0
   let sum = 0
 
-  dataMap.forEach((item) => {
-    if (item.date > (currentDate - windowSize * 60 * 1000)) {
+  items.forEach((item) => {
+    if ((item.date < maximum) && (item.date >= minimum)) {
       numOfItems = numOfItems + 1
       sum = sum + item.duration
     }
   })
 
-  let outputAverage = Math.round((sum / numOfItems) * 10) / 10
-  let outputDate = dateToString(currentDate)
-  outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}}\n`)
-  outputStream.end()
-})
+  return Math.round((sum / numOfItems) * 10) / 10
+}
 
 /**
  * Transforms a unix time number to a proper date in the

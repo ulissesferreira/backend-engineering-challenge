@@ -1,0 +1,13 @@
+{
+  "name": "backend-engineering-challenge",
+  "version": "1.0.0",
+  "description": "Unbabel's Backend Coding Challenge",
+  "main": "index.js",
+  "repository": "https://github.com/ulissesferreira/backend-engineering-challenge.git",
+  "author": "Ulisses Ferreira <ulissesvf@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node src/index.js --input_file events.json --window_size 10"
+  }
+}

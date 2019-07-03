@@ -21,9 +21,6 @@ if (fileIndex === 0 || windowIndex === 0) {
 const eventStreamFile = process.argv[fileIndex]
 const windowSize = process.argv[windowIndex]
 
-let currentDate = 0
-let dataMap = []
-
 const outputStream = fs.createWriteStream('output.json', {flags: 'w'})
 
 const fileReader = readline.createInterface({
@@ -38,6 +35,9 @@ const fileReader = readline.createInterface({
  * a cache until we no longer need them (they are older than
  * the window period)
  */
+let currentDate = 0
+let dataMap = []
+
 fileReader.on('line', (line) => {
 
   const event = JSON.parse(line)
@@ -50,31 +50,31 @@ fileReader.on('line', (line) => {
 
   const dateRounded = new Date(event.timestamp).setSeconds(0,0)
 
-  // First run
+  // First run, average is always zero
   if (currentDate === 0) {
 
     currentDate = dateRounded + (60 * 1000)
-
     let outputDate = dateToString(dateRounded)
-
     outputStream.write(`{"date": "${outputDate}", "average_delivery_time": 0}\n`)
 
   } else {
 
+    // We want to go from the last read time to the time we read now.
+    // Using 1 minute intervals.
     for (i = currentDate; i <= dateRounded; i = i + (60 * 1000)) {
 
       let numOfItems = 0
       let sum = 0
-      // Queremos ver de i até -10 minutos todas as posicoes
+      
+      // Every interval we go back into our cache and check which
+      // events are placed in the time interval required: between [i - window; i]
       dataMap.forEach((item) => {
         if ((item.date < i) && (item.date > (i - (windowSize * 60 * 1000)))) {
-          console.log(dateToString(i) + ' > ' + dateToString(item.date) + ' > ' + dateToString(i - windowSize * 60 * 1000))
           numOfItems = numOfItems + 1
           sum = sum + item.duration
         }
       })
       //
-      console.log('Em ' + dateToString(i) + ' deu a sum: ' + sum)
       let outputAverage = sum / numOfItems
       let outputDate = dateToString(i)
       outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}}\n`)

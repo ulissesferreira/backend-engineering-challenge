@@ -36,7 +36,7 @@ const fileReader = readline.createInterface({
  * the window period)
  */
 let currentDate = 0
-let dataMap = []
+let dataCache = []
 
 fileReader.on('line', (line) => {
 
@@ -44,7 +44,7 @@ fileReader.on('line', (line) => {
   const date = Date.parse(event.timestamp)
   const dateRounded = new Date(event.timestamp).setSeconds(0,0)
 
-  dataMap.push({
+  dataCache.push({
     date,
     duration: event.duration
   })
@@ -64,11 +64,15 @@ fileReader.on('line', (line) => {
 
       const minimum = i - windowSize * 60 * 1000
       const maximum = i 
-      const outputAverage = movingAverage(dataMap, minimum, maximum)
+      const outputAverage = movingAverage(dataCache, minimum, maximum)
       const outputDate = dateToString(i)
       outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}}\n`)
     }
 
+    // Cache clean, we don't need to store values older than this.
+    dataCache = dataCache.filter((item) => item.date > currentDate - windowSize * 60 * 1000 )
+
+    // Set the current date to the next value we need to calculate.
     currentDate = dateRounded + (60 * 1000)
   }
 })
@@ -77,7 +81,7 @@ fileReader.on('close', () => {
 
   const minimum = currentDate - windowSize * 60 * 1000
   const maximum = 999999999999999 // Year 33658
-  const outputAverage = movingAverage(dataMap, minimum, maximum)
+  const outputAverage = movingAverage(dataCache, minimum, maximum)
   let outputDate = dateToString(currentDate)
   outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}}\n`)
   outputStream.end()

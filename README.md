@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/ulissesferreira/backend-engineering-challenge.svg?branch=master)](https://travis-ci.com/ulissesferreira/backend-engineering-challenge)
+
 # Backend Engineering Challenge
 
 

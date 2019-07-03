@@ -1,9 +1,18 @@
+/**
+ * The projects purpose is explained in the README. There is
+ * detailed description of how the solution works on the 
+ * SOLUTION file.
+ * 
+ * @author Ulisses Ferreira
+ */
+
 const fs = require('fs')
 const readline = require('readline')
 
 const fileIndex = process.argv.indexOf('--input_file') + 1
 const windowIndex = process.argv.indexOf('--window_size') + 1
 
+// Check for missing arguments.
 if (fileIndex === 0 || windowIndex === 0) {
   console.log('Missing arguments in function')
   process.exit(1)
@@ -21,6 +30,14 @@ const fileReader = readline.createInterface({
   input: fs.createReadStream(eventStreamFile),
 });
 
+/**
+ * Core logic. This happens everytime we read a line from
+ * the input file. If we read a line whose timestamp is X
+ * we catch up with all the moving averages until X (with
+ * a 1 minute interval). We temporarily store lines read in
+ * a cache until we no longer need them (they are older than
+ * the window period)
+ */
 fileReader.on('line', (line) => {
 
   const event = JSON.parse(line)
@@ -30,9 +47,6 @@ fileReader.on('line', (line) => {
     date,
     duration: event.duration
   })
-
-  // Check if we already have passed time
-  // sum all and divide by the number of events
 
   const dateRounded = new Date(event.timestamp).setSeconds(0,0)
 
@@ -86,11 +100,18 @@ fileReader.on('line', (line) => {
 })
 
 fileReader.on('close', () => {
-  //console.log(dataMap)
   outputStream.end()
 })
 
-// COnverts a unixEpoch to year-month-day hour:minute:second
+/**
+ * Transforms a unix time number to a proper date in the
+ * following format: year-month-day hour:minute:seconds
+ * Automatically pads the numbers with zeroes on the left.
+ * 
+ * @param {Number} unixEpoch - Number of milliseconds elapsed 
+ * from 00:00:00 Thursday, 1 January 1970.
+ * Read here for more info https://en.wikipedia.org/wiki/Unix_time
+ */
 const dateToString = (unixEpoch) => {
   let stringDate = new Date(0)
   stringDate.setUTCMilliseconds(unixEpoch)
@@ -103,7 +124,15 @@ const dateToString = (unixEpoch) => {
   return `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`
 }
 
-// Adds the necessary 00 in case the number doesnt have ti
+/**
+ * Returns a two digit number with zeroes
+ * padded on the left if these are not present
+ * Ex: 1 -> 01
+ *     0 -> 00
+ *    01 -> 01
+ * 
+ * @param {*} number 
+ */
 const zeroPad = (number) => {
   return ("00" + number).slice(-2)
 }

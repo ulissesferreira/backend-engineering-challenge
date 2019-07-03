@@ -1,6 +1,6 @@
 # Backend Engineering Challenge - Solution
 
-🤓 Geek time. A simple explanation on my approach to this problem. Keep in mind this could be solved in a number of different ways and there could be better solutions for specific contexts. This logic attempts to solve this problem for **most** situations that involve big data and an enormous input file (which I believe make sense at Unbabel).
+🤓 Geek time. A simple explanation on my approach to this problem. Keep in mind this could be solved in a number of different ways and there could be better solutions for specific contexts. This logic attempts to solve this problem for **most** situations that involve big data and an enormous input file (which I believe makes sense at Unbabel).
 
 ## Logic
 
@@ -25,7 +25,7 @@ Basically, given a set events with a timestamp and a duration we want to calcula
 
 ## OK, fair enough, what's the challenge?
 
-The problem here is not the calculation of moving averages, that is a relatively easy arithmetic operation. The problem here is how you approach your data fetching. The simplest approach, but also not really scalable, involves reading the input file multiple times everytime you need to fetch data. And this works fairly well with small files. However, this approach is problematic if we are using huge files (above GB size). The first bytes of information will be read throughout the whole process and not really needed (imagine a file with an hour of logs we keep on parsing the first 2 minutes...).
+The problem here is not the calculation of moving averages, that is a relatively easy arithmetic operation. The problem here is how you approach your data fetching. The simplest approach, but also not really scalable, involves reading the input file multiple times everytime you need to fetch data. And this works fairly well with small files. However, this approach is problematic if we are using huge files (above GB size). The first bytes of information will be read throughout the whole process and not really needed (imagine a file with an hour of logs we keep on parsing the first 2 minutes repeatedly to access the other ones...).
 
 So how do we do this? Parse the whole file into memory? 
 
@@ -37,6 +37,6 @@ We can solve this problem reading each line of the file only once and keeping a 
 
 2018-12-26 18:15:19.903159
 
-We are gonna output all the moving averages from where we started up until 18:15:00. This way, when we read the next line we already have all the previous work done. Instead using our 1 minute incremental times as a step, we consider each line read as a step.
+We are gonna output all the moving averages from where we started up until 18:15:00. This way, when we read the next line we already have all the previous work done. Instead of using our 1 minute incremental times as a step, **we consider each line read as a step** and wrapping the rest of the code around that.
 
 But how do we access previous line's data? We keep a cache with timestamps and their event duration. Everytime we finish parsing one interval we can clear from that cache all the values that are already outside of our window since we won't need them anymore.

@@ -75,31 +75,33 @@ fileReader.on('line', (line) => {
       })
       //
       // console.log(dateToString(i))
-      let outputAverage = sum / numOfItems
+      let outputAverage = Math.round((sum / numOfItems) * 10) / 10
       let outputDate = dateToString(i)
-      outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}} - ${dateToString(currentDate)}\n`)
+      outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}}\n`)
     }
 
-    let numOfItems = 0
-    let sum = 0
-
-    const nextDateRounded = dateRounded + (60 * 1000)
-
-    dataMap.forEach((item) => {
-      if (item.date > (nextDateRounded - windowSize * 60 * 1000)) {
-        numOfItems = numOfItems + 1
-        sum = sum + item.duration
-      }
-    })
-
-    let outputAverage = sum / numOfItems
-    let outputDate = dateToString(dateRounded + (60 * 1000))
-    outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}}\n`)
-    currentDate = nextDateRounded + (60 * 1000)
+    currentDate = dateRounded + (60 * 1000)
   }
 })
 
 fileReader.on('close', () => {
+
+  // currentDate
+  // dataMap[last]
+
+  let numOfItems = 0
+  let sum = 0
+
+  dataMap.forEach((item) => {
+    if (item.date > (currentDate - windowSize * 60 * 1000)) {
+      numOfItems = numOfItems + 1
+      sum = sum + item.duration
+    }
+  })
+
+  let outputAverage = Math.round((sum / numOfItems) * 10) / 10
+  let outputDate = dateToString(currentDate)
+  outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}}\n`)
   outputStream.end()
 })
 

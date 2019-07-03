@@ -42,20 +42,19 @@ fileReader.on('line', (line) => {
 
   const event = JSON.parse(line)
   const date = Date.parse(event.timestamp)
+  const dateRounded = new Date(event.timestamp).setSeconds(0,0)
 
   dataMap.push({
     date,
     duration: event.duration
   })
 
-  const dateRounded = new Date(event.timestamp).setSeconds(0,0)
-
   // First run, average is always zero
   if (currentDate === 0) {
 
-    currentDate = dateRounded + (60 * 1000)
     let outputDate = dateToString(dateRounded)
     outputStream.write(`{"date": "${outputDate}", "average_delivery_time": 0}\n`)
+    currentDate = dateRounded + (60 * 1000)
 
   } else {
 
@@ -69,22 +68,25 @@ fileReader.on('line', (line) => {
       // Every interval we go back into our cache and check which
       // events are placed in the time interval required: between [i - window; i]
       dataMap.forEach((item) => {
-        if ((item.date < i) && (item.date > (i - (windowSize * 60 * 1000)))) {
+        if ((item.date < i) && (item.date >= (i - (windowSize * 60 * 1000)))) {
           numOfItems = numOfItems + 1
           sum = sum + item.duration
         }
       })
       //
+      // console.log(dateToString(i))
       let outputAverage = sum / numOfItems
       let outputDate = dateToString(i)
-      outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}}\n`)
+      outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}} - ${dateToString(currentDate)}\n`)
     }
 
     let numOfItems = 0
     let sum = 0
 
+    const nextDateRounded = dateRounded + (60 * 1000)
+
     dataMap.forEach((item) => {
-      if (item.date > (date - windowSize * 60 * 1000)) {
+      if (item.date > (nextDateRounded - windowSize * 60 * 1000)) {
         numOfItems = numOfItems + 1
         sum = sum + item.duration
       }
@@ -93,9 +95,7 @@ fileReader.on('line', (line) => {
     let outputAverage = sum / numOfItems
     let outputDate = dateToString(dateRounded + (60 * 1000))
     outputStream.write(`{"date": "${outputDate}", "average_delivery_time": ${outputAverage}}\n`)
-
-    currentDate = dateRounded + (60 * 1000)
-
+    currentDate = nextDateRounded + (60 * 1000)
   }
 })
 

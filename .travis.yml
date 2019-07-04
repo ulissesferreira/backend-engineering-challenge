@@ -6,9 +6,9 @@ install:
   - nvm install 10.16
 
 script: node ./src/index.js --input_file ./tests/simple/events.json --window_size 10 --output_file ./tests/simple/output.json && 
-node ./src/index.js --input_file ./tests/1/events.json --window_size 10 --output_file ./tests/1/output.json &&  
-node ./src/index.js --input_file ./tests/2/events.json --window_size 10 --output_file ./tests/2/output.json &&
-node ./src/index.js --input_file ./tests/2/events.json --window_size 10 --output_file ./tests/3/output.json &&
-node ./src/index.js --input_file ./tests/2/events.json --window_size 10 --output_file ./tests/4/output.json &&
-node ./src/index.js --input_file ./tests/2/events.json --window_size 10 --output_file ./tests/5/output.json &&
-python tests/index.test.py
+  node ./src/index.js --input_file ./tests/1/events.json --window_size 10 --output_file ./tests/1/output.json &&  
+  node ./src/index.js --input_file ./tests/2/events.json --window_size 10 --output_file ./tests/2/output.json &&
+  node ./src/index.js --input_file ./tests/2/events.json --window_size 10 --output_file ./tests/3/output.json &&
+  node ./src/index.js --input_file ./tests/2/events.json --window_size 10 --output_file ./tests/4/output.json &&
+  node ./src/index.js --input_file ./tests/2/events.json --window_size 10 --output_file ./tests/5/output.json &&
+  python tests/index.test.py

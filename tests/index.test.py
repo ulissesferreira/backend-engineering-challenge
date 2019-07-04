@@ -1,6 +1,3 @@
-import os.path
-import subprocess
-
 # Multiple test scenarios
 #
 # Simple - Uses the provided README input and output

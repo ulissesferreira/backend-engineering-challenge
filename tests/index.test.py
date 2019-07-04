@@ -83,17 +83,17 @@ def test_5():
   print(' ✅  Test 5 passed')
 
 if __name__ == "__main__":
-  subprocess.call('node src/index.js --input_file ./tests/simple/events.json --window_size 10 --output_file ./tests/simple/output.json')
+  subprocess.call('node ./src/index.js --input_file ./tests/simple/events.json --window_size 10 --output_file ./tests/simple/output.json')
   test_simple()
-  subprocess.call('node src/index.js --input_file ./tests/1/events.json --window_size 10 --output_file ./tests/1/output.json')
+  subprocess.call('node ./src/index.js --input_file ./tests/1/events.json --window_size 10 --output_file ./tests/1/output.json')
   test_1()
-  subprocess.call('node src/index.js --input_file ./tests/2/events.json --window_size 10 --output_file ./tests/2/output.json')
+  subprocess.call('node ./src/index.js --input_file ./tests/2/events.json --window_size 10 --output_file ./tests/2/output.json')
   test_2()
-  subprocess.call('node src/index.js --input_file ./tests/3/events.json --window_size 10 --output_file ./tests/3/output.json')
+  subprocess.call('node ./src/index.js --input_file ./tests/3/events.json --window_size 10 --output_file ./tests/3/output.json')
   test_3()
-  subprocess.call('node src/index.js --input_file ./tests/4/events.json --window_size 10 --output_file ./tests/4/output.json')
+  subprocess.call('node ./src/index.js --input_file ./tests/4/events.json --window_size 10 --output_file ./tests/4/output.json')
   test_4()
-  subprocess.call('node src/index.js --input_file ./tests/5/events.json --window_size 10 --output_file ./tests/5/output.json')
+  subprocess.call('node ./src/index.js --input_file ./tests/5/events.json --window_size 10 --output_file ./tests/5/output.json')
   test_5()
   print("Everything passed")
 

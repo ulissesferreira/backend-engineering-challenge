@@ -119,6 +119,9 @@ const movingAverage = (items, minimum, maximum) => {
     }
   })
 
+  if (numOfItems === 0)
+    return 0
+  
   return Math.round((sum / numOfItems) * 10) / 10
 }
 

@@ -9,6 +9,13 @@
   "private": true,
   "scripts": {
     "start": "node src/index.js --input_file events.json --window_size 100",
-    "test": "python tests/index.test.py"
+    "test_all": "npm run test_simple && npm run test_1 && npm run test_2 && npm run test_3 && npm run test_4 && npm run test_5",
+    "test_simple": "node ./src/index.js --input_file ./tests/simple/events.json --window_size 10 --output_file ./tests/simple/output.json",
+    "test_1": "node ./src/index.js --input_file ./tests/1/events.json --window_size 10 --output_file ./tests/1/output.json",
+    "test_2": "node ./src/index.js --input_file ./tests/2/events.json --window_size 10 --output_file ./tests/2/output.json",
+    "test_3": "node ./src/index.js --input_file ./tests/3/events.json --window_size 10 --output_file ./tests/3/output.json",
+    "test_4": "node ./src/index.js --input_file ./tests/4/events.json --window_size 10 --output_file ./tests/4/output.json",
+    "test_5": "node ./src/index.js --input_file ./tests/5/events.json --window_size 10 --output_file ./tests/5/output.json",
+    "test": "npm run test_all && python tests/index.test.py"
   }
 }

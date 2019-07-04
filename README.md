@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.com/ulissesferreira/backend-engineering-challenge.svg?branch=master)](https://travis-ci.com/ulissesferreira/backend-engineering-challenge)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/9ffbc70924304c5ca44ce1f1a41f96cf)](https://www.codacy.com/app/ulissesferreira/backend-engineering-challenge?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ulissesferreira/backend-engineering-challenge&amp;utm_campaign=Badge_Grade)
+
 # Solved - Information
 
 Welcome to my take on this problem. Here is a couple of guidelines on how to run the project.

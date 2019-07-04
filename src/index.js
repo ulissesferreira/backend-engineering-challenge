@@ -69,7 +69,7 @@ fileReader.on('line', (line) => {
 
     // We want to go from the last read time to the time we read now.
     // Using 1 minute intervals.
-    for (i = currentDate; i <= dateRounded; i = i + (60 * 1000)) {
+    for (let i = currentDate; i <= dateRounded; i = i + (60 * 1000)) {
 
       const minimum = i - windowSize * 60 * 1000
       const maximum = i 

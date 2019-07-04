@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "node src/index.js --input_file events.json --window_size 10",
+    "start": "node src/index.js --input_file events.json --window_size 100",
     "test": "python tests/index.test.py"
   }
 }

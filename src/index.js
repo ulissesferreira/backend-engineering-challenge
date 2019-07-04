@@ -11,6 +11,7 @@ const readline = require('readline')
 
 const fileIndex = process.argv.indexOf('--input_file') + 1
 const windowIndex = process.argv.indexOf('--window_size') + 1
+const outputFile = process.argv.indexOf('--output_file') + 1 // * Optional
 
 // Check for missing arguments.
 if (fileIndex === 0 || windowIndex === 0) {
@@ -21,7 +22,15 @@ if (fileIndex === 0 || windowIndex === 0) {
 const eventStreamFile = process.argv[fileIndex]
 const windowSize = process.argv[windowIndex]
 
-const outputStream = fs.createWriteStream('output.json', {flags: 'w'})
+let outputStream = null
+
+if (outputFile === 0) {
+  // Not set, fallback to default
+  outputStream = fs.createWriteStream('output.json', { flags: 'w' })
+} else {
+  const outputFileName = process.argv[outputFile]
+  outputStream = fs.createWriteStream(outputFileName, { flags: 'w' })
+}
 
 const fileReader = readline.createInterface({
   input: fs.createReadStream(eventStreamFile),

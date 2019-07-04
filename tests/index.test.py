@@ -83,7 +83,6 @@ def test_5():
   print(' ✅  Test 5 passed')
 
 if __name__ == "__main__":
-  subprocess.call('node -v')
   subprocess.call('node ./src/index.js --input_file ./tests/simple/events.json --window_size 10 --output_file ./tests/simple/output.json')
   test_simple()
   subprocess.call('node ./src/index.js --input_file ./tests/1/events.json --window_size 10 --output_file ./tests/1/output.json')

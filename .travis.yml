@@ -2,10 +2,8 @@ language: python
 python:
   - "3.4"
 
-before_install:
-  - wget https://raw.githubusercontent.com/creationix/nvm/v0.31.0/nvm.sh -O ~/.nvm/nvm.sh
-  - source ~/.nvm/nvm.sh
+install:
   - nvm install 10.16
-  - node --version
 
-script: python tests/index.test.py
+script: node ./src/index.js --input_file ./tests/simple/events.json --window_size 10 --output_file ./tests/simple/output.json && 
+  python tests/index.test.py

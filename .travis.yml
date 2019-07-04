@@ -2,4 +2,7 @@ language: python
 python:
   - "3.4"
 
+install:
+  - nvm install 10.16
+
 script: python tests/index.test.py

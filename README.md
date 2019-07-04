@@ -1,5 +1,56 @@
 [![Build Status](https://travis-ci.com/ulissesferreira/backend-engineering-challenge.svg?branch=master)](https://travis-ci.com/ulissesferreira/backend-engineering-challenge)
 
+# Solved - Information
+
+Welcome to my take on this problem. Here is a couple of guidelines on how to run the project.
+
+## Installing
+
+To run this application you will need Node.js for the core code and Python for the tests. After having those tools installed, I recommend you install Yarn. You don't need Yarn to run the project but you will have to replace the yarn commands with the npm equivalent ones.
+
+```console
+git clone https://github.com/ulissesferreira/backend-engineering-challenge.git
+cd backend-engineering-challenge
+```
+
+## 🏃‍ Running
+
+Here is how you run the project. If you want to change environment variables or run node with specific arguments you can peek inside package.json and replace the start script as you please.
+
+```console
+yarn start
+```
+
+or 
+
+```console
+npm run start
+```
+
+Direct Node command (you can change parameters here)
+
+```console
+node src/index.js --input_file events.json --window_size 10
+```
+
+## 🚦 Testing
+
+```console
+yarn test
+```
+
+or 
+
+```console
+npm run test
+```
+
+Direct python command
+
+```console
+python tests/index.test.py
+```
+
 # Backend Engineering Challenge
 
 
